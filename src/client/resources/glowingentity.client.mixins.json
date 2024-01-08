@@ -5,6 +5,7 @@
   "client": [
     "EntityRendererMixin",
     "GameMenuScreenMixin",
+    "ModelPredicateProviderMixin",
     "ModEntityDataSaverMixin"
   ],
   "injectors": {

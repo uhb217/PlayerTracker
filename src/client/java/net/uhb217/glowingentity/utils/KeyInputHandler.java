@@ -16,8 +16,13 @@ public class KeyInputHandler {
     public static void registerKeyInputs(){
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (openLSScreenKey.wasPressed() && client.world.isClient()){
-                client.setScreen(new TestScreen(new TestGUI()));
+//                client.setScreen(new TestScreen(new TestGUI(client)));
+                IEntityDataSaver data = (IEntityDataSaver) client.player;
+                if (data.getPersistentData().contains("compass_target"))
+                    client.player.sendMessage(Text.literal(data.getPersistentData().getUuid("compass_target").toString()));
+                else client.player.sendMessage(Text.literal("No target found"));
             }
+
         });
     }
     public static void register(){
@@ -27,7 +32,6 @@ public class KeyInputHandler {
                 GLFW.GLFW_KEY_R,
                 KEY_CATEGORY_LS
         ));
-
         registerKeyInputs();
     }
 }

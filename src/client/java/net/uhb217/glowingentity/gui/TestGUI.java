@@ -1,56 +1,58 @@
 package net.uhb217.glowingentity.gui;
 
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
-import io.github.cottonmc.cotton.gui.client.ScreenDrawing;
-import io.github.cottonmc.cotton.gui.impl.LibGuiCommon;
-import io.github.cottonmc.cotton.gui.impl.client.NarrationMessages;
-import io.github.cottonmc.cotton.gui.widget.WGridPanel;
-import io.github.cottonmc.cotton.gui.widget.WLabel;
+import io.github.cottonmc.cotton.gui.widget.TooltipBuilder;
+import io.github.cottonmc.cotton.gui.widget.WPlainPanel;
+import io.github.cottonmc.cotton.gui.widget.WSprite;
 import io.github.cottonmc.cotton.gui.widget.WToggleButton;
-import io.github.cottonmc.cotton.gui.widget.WWidget;
-import io.github.cottonmc.cotton.gui.widget.data.InputResult;
+import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.cottonmc.cotton.gui.widget.data.Texture;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.screen.narration.NarrationPart;
-import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.Nullable;
+import net.uhb217.glowingentity.GlowingEntity;
+import net.uhb217.glowingentity.utils.IEntityDataSaver;
 
 import java.util.function.Consumer;
 
+@Environment(EnvType.CLIENT)
 public class TestGUI extends LightweightGuiDescription {
-    public TestGUI() {
-        WGridPanel root = new WGridPanel();
+    public TestGUI(MinecraftClient client) {
+        IEntityDataSaver playerData = (IEntityDataSaver) client.player;
+        NbtCompound nbt = playerData.getPersistentData();
+        WPlainPanel root = new WPlainPanel();
         setRootPanel(root);
-        root.setSize(300, 200);
-        WToggleButton button = new WToggleButton(Text.literal("Off"));
-        button.setOnToggle(new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) {
-                if (aBoolean)
-                    button.setLabel(Text.literal("On"));
+        root.setSize(144,190);
+        root.setInsets(new Insets(0,0,0,0));
+
+        WSprite glowingEntities = new WSprite(new Texture(new Identifier(GlowingEntity.MOD_ID,"textures/gui/glow.png")));
+        glowingEntities.addTooltip(new TooltipBuilder().add(Text.literal("Hello")));
+        root.add(glowingEntities,5,10);
+        WToggleButton button = new WToggleButton(Text.literal("Off").formatted(Formatting.RED));
+        if (nbt.contains("glow") && nbt.getInt("glow") > 0){
+            button.setToggle(true);
+            button.setLabel(Text.literal("On").formatted(Formatting.GREEN));
+        }
+        button.setOnToggle(aBoolean -> {
+            if (aBoolean){
+                button.setLabel(Text.literal("On").formatted(Formatting.GREEN));
+                if (nbt.contains("last_glow"))
+                    nbt.putInt("glow", nbt.getInt("last_glow"));
                 else
-                    button.setLabel(Text.literal("Off"));
+                    nbt.putInt("glow", 15);
+            }
+            else{
+                button.setLabel(Text.literal("Off").formatted(Formatting.RED));
+                if (nbt.contains("glow"))
+                    nbt.putInt("last_glow",nbt.getInt("glow"));
+                nbt.putInt("glow",-1);
             }
         });
-        root.add(button,1,0);
-        WToggleButton button1 = new WToggleButton(Text.literal("Off"));
-        button1.setOnToggle(new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) {
-                if (aBoolean)
-                    button1.setLabel(Text.literal("On"));
-                else
-                    button1.setLabel(Text.literal("Off"));
-            }
-        });
-        root.add(button1,1,1);
+        root.add(button,28,11);
     }
 }
