@@ -17,6 +17,8 @@ import org.jetbrains.annotations.Nullable;
 public class Button extends WButton {
     private static final int ICON_SPACING = 2;
     private Text toolTip;
+    public Button(){
+    }
     public Button(@Nullable Icon icon){
         this.setIcon(icon);
     }
@@ -25,7 +27,7 @@ public class Button extends WButton {
         return this;
     }
     public static void drawToolTip(DrawContext context, int x, int y, int mouseX, int mouseY, WWidget widget,Text toolTip){
-        boolean shouldDrawToolTip = mouseX >= 0 && mouseX <=widget.getWidth() && mouseY >= 0 && mouseY <= widget.getHeight();
+        boolean shouldDrawToolTip = toolTip != null && mouseX >= 0 && mouseX <=widget.getWidth() && mouseY >= 0 && mouseY <= widget.getHeight();
         if (shouldDrawToolTip){
             var client = MinecraftClient.getInstance();
             context.drawTooltip(client.textRenderer,toolTip,x + mouseX,y + mouseY);
