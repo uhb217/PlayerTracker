@@ -2,7 +2,8 @@ package net.uhb217.glowingentity.gui;
 
 import com.mojang.authlib.GameProfile;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
-import io.github.cottonmc.cotton.gui.widget.*;
+import io.github.cottonmc.cotton.gui.widget.WPlainPanel;
+import io.github.cottonmc.cotton.gui.widget.WToggleButton;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.cottonmc.cotton.gui.widget.data.Texture;
 import io.github.cottonmc.cotton.gui.widget.icon.ItemIcon;
@@ -19,9 +20,11 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.uhb217.glowingentity.GlowingEntity;
 import net.uhb217.glowingentity.gui.widgeds.Button;
+import net.uhb217.glowingentity.gui.widgeds.Sprite;
 import net.uhb217.glowingentity.utils.IEntityDataSaver;
 
 import java.util.List;
+import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
 public class TestGUI extends LightweightGuiDescription {
@@ -38,7 +41,7 @@ public class TestGUI extends LightweightGuiDescription {
     }
 
     public void createGlowingEntityModule(NbtCompound nbt, WPlainPanel root) {
-        WSprite glowingEntities = new WSprite(new Texture(new Identifier(GlowingEntity.MOD_ID, "textures/gui/glow.png")));
+        Sprite glowingEntities = new Sprite(new Texture(new Identifier(GlowingEntity.MOD_ID, "textures/gui/glow.png"))).setToolTip(Text.literal("Glowing Entity").formatted(Formatting.GOLD));
         root.add(glowingEntities, 5, 10);
         WToggleButton button = new WToggleButton(Text.literal("Off").formatted(Formatting.RED));
         if (nbt.contains("glow") && nbt.getInt("glow") > 0) {
@@ -62,7 +65,7 @@ public class TestGUI extends LightweightGuiDescription {
         root.add(button, 28, 11);
     }
     public void createPlayerTrackerModule(NbtCompound nbt, WPlainPanel root,MinecraftClient mc){
-        WSprite playerTracker = new WSprite(new Texture(new Identifier(GlowingEntity.MOD_ID, "textures/gui/player_tracker.png")));
+        Sprite playerTracker = new Sprite(new Texture(new Identifier(GlowingEntity.MOD_ID, "textures/gui/player_tracker.png"))).setToolTip(Text.literal("Player Tracker").formatted(Formatting.DARK_RED));
         root.add(playerTracker, 5, 31);
         WToggleButton button = new WToggleButton(Text.literal("Off").formatted(Formatting.RED));
         if (nbt.contains("player_tracker") && nbt.getBoolean("player_tracker")){
@@ -82,67 +85,34 @@ public class TestGUI extends LightweightGuiDescription {
     }
     public static class PlayerTrackerSetTargetGUI extends LightweightGuiDescription{
         public PlayerTrackerSetTargetGUI(MinecraftClient mc){
-            WPlainPanel root = new WPlainPanel().setInsets(new Insets(2,2,2,2));
+            WPlainPanel root = new WPlainPanel().setInsets(new Insets(0,0,0,0));
             this.setRootPanel(root);
-            root.setSize(140, 190);
+            root.setSize(108, 70);
 
-
-//            WItemSlot itemSlot = WItemSlot.of(new Inventory() {
-//                @Override
-//                public int size() {
-//                    return 0;
-//                }
-//
-//                @Override
-//                public boolean isEmpty() {
-//                    return false;
-//                }
-//
-//                @Override
-//                public ItemStack getStack(int slot) {
-//                    return null;
-//                }
-//
-//                @Override
-//                public ItemStack removeStack(int slot, int amount) {
-//                    return null;
-//                }
-//
-//                @Override
-//                public ItemStack removeStack(int slot) {
-//                    return null;
-//                }
-//
-//                @Override
-//                public void setStack(int slot, ItemStack stack) {
-//
-//                }
-//
-//                @Override
-//                public void markDirty() {
-//
-//                }
-//
-//                @Override
-//                public boolean canPlayerUse(PlayerEntity player) {
-//                    return false;
-//                }
-//
-//                @Override
-//                public void clear() {
-//
-//                }
-//            }, 0, 7, 3).setIcon(new ItemIcon(getPLayersHeads(mc)[0]));
-            Button button = new Button(new ItemIcon(getPLayersHeads(mc)[0]),Text.literal("ToolTip!").formatted(Formatting.GREEN));
-//            WButton button = new WButton(new TextureIcon(new Texture(new Identifier(GlowingEntity.MOD_ID, "textures/gui/player_tracker.png"))));
-            button.setOnClick(()-> mc.player.sendMessage(Text.literal("Clicked!"))).setIconSize(13);
-            Button button1 = new Button(new ItemIcon(getPLayersHeads(mc)[0]),Text.literal("ToolTip 0.2!").formatted(Formatting.GREEN));
-            button1.setOnClick(()-> mc.player.sendMessage(Text.literal("Clicked!"))).setIconSize(13);
-            root.add(button,5,5);
-//            root.add(button1,25,5);
-
+            Button[][] buttons = new Button[5][3];
+            for (int i = 0; i < buttons.length; i++) {
+                for (int j = 0; j < buttons[i].length; j++) {
+                    buttons[i][j] = new Button(new ItemIcon(getPLayersHeads(mc)[0])).setToolTip(Text.literal(getPLayersNames(mc)[0]).formatted(Formatting.GREEN));
+                    int I = i,J = j;
+                    buttons[i][j].setOnClick(()->{
+                        NbtCompound nbt = ((IEntityDataSaver)mc.player).getPersistentData();
+                        if (I + J > getPLayersNames(mc).length)
+                            nbt.putUuid("compass_target",getPlayerUUidFromName(getPLayersNames(mc)[I+J],mc));
+                        else
+                            nbt.putUuid("compass_target",null);
+                    });
+                    buttons[i][j].setSize(25,25);
+                    root.add(buttons[i][j],5+(20 * i),5+(20*j));
+                }
+            }
         }
-
+        private UUID getPlayerUUidFromName(String name,MinecraftClient mc){
+            for (AbstractClientPlayerEntity player: mc.world.getPlayers()){
+                if (player.getName().getString().equals(name))
+                    return player.getUuid();
+            }
+            return null;
+        }
         public static ItemStack[] getPLayersHeads(MinecraftClient client) {
             List<AbstractClientPlayerEntity> players = client.world.getPlayers();
             ItemStack[] skulls = new ItemStack[players.size()];
@@ -150,7 +120,15 @@ public class TestGUI extends LightweightGuiDescription {
                 skulls[i] = Items.PLAYER_HEAD.getDefaultStack();
                 skulls[i].setNbt(getNbtFromProfile(players.get(i).getGameProfile()));
             }
+
             return skulls;
+        }
+        public static String[] getPLayersNames(MinecraftClient client) {
+            List<AbstractClientPlayerEntity> players = client.world.getPlayers();
+            String[] names = new String[players.size()];
+            for (int i = 0; i < names.length; i++)
+                names[i] = players.get(i).getName().getString();
+            return names;
         }
         public static NbtCompound getNbtFromProfile(GameProfile profile) {
             // apply player's skin to head
