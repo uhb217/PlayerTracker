@@ -3,13 +3,13 @@
 	"id": "playertrackermod",
 	"version": "${version}",
 	"name": "Player Tracker",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "This is a client side mod that let you track player with a compass",
 	"authors": [
 		"UHB217"
 	],
 	"contact": {
 		"homepage": "",
-		"sources": ""
+		"sources": "https://github.com/uhb217/PlayerTracker-1.20.4"
 	},
 	"license": "MIT",
 	"icon": "assets/playertrackermod/textures/gui/player_tracker.png",

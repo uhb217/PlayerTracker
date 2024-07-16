@@ -16,7 +16,7 @@ public class KeyInputHandler {
     public static void registerKeyInputs() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (openLSScreenKey.wasPressed() && client.world.isClient()) {
-                client.setScreen(new TestScreen(new GUI.PlayerTrackerSetTargetGUI(client)));
+                client.setScreen(new TestScreen(new GUI(client)));
             }
         });
     }
