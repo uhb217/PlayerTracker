@@ -1,4 +1,4 @@
-package net.uhb217.glowingentity.gui.widgeds;
+package net.uhb217.playertrackermod.gui.widgeds;
 
 import io.github.cottonmc.cotton.gui.widget.WSprite;
 import io.github.cottonmc.cotton.gui.widget.data.Texture;
@@ -6,7 +6,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import static net.uhb217.glowingentity.gui.widgeds.Button.drawToolTip;
+import static net.uhb217.playertrackermod.gui.widgeds.SlotButton.drawToolTip;
 
 public class Sprite extends WSprite {
     private Text toolTip = null;

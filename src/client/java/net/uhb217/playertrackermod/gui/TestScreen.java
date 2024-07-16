@@ -1,4 +1,4 @@
-package net.uhb217.glowingentity.gui;
+package net.uhb217.playertrackermod.gui;
 
 import io.github.cottonmc.cotton.gui.GuiDescription;
 import io.github.cottonmc.cotton.gui.client.CottonClientScreen;

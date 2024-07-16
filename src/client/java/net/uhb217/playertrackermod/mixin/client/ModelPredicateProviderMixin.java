@@ -1,4 +1,4 @@
-package net.uhb217.glowingentity.mixin.client;
+package net.uhb217.playertrackermod.mixin.client;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.CompassAnglePredicateProvider;
@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.GlobalPos;
-import net.uhb217.glowingentity.utils.IEntityDataSaver;
+import net.uhb217.playertrackermod.utils.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,8 +32,8 @@ public abstract class ModelPredicateProviderMixin{
                             if(data.contains("player_tracker") && data.getBoolean("player_tracker")) {
                                 if (entity.isPlayer() && data.contains("compass_target") && entity.getWorld().getPlayerByUuid(data.getUuid("compass_target")) != null && entity.getWorld().isClient())
                                         return GlobalPos.create(world.getRegistryKey(), entity.getWorld().getPlayerByUuid(data.getUuid("compass_target")).getBlockPos());
-                                if(entity.isPlayer() && sentError == 0) {
-                                    MinecraftClient.getInstance().player.sendMessage(Text.literal("Compass target didn't exist or not in your dimension").formatted(Formatting.RED));
+                                else if(entity.isPlayer() && sentError <= 0) {
+                                    MinecraftClient.getInstance().player.sendMessage(Text.literal("Player Tracker: Compass target didn't exist in your dimension 😔").formatted(Formatting.RED));
                                     sentError = 100;
                                 }
                                 sentError--;

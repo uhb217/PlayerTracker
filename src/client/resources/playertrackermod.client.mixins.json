@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "net.uhb217.glowingentity.mixin.client",
+  "package": "net.uhb217.playertrackermod.mixin.client",
   "compatibilityLevel": "JAVA_17",
   "client": [
     "EntityRendererMixin",

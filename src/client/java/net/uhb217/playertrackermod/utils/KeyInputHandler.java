@@ -1,27 +1,27 @@
-package net.uhb217.glowingentity.utils;
+package net.uhb217.playertrackermod.utils;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
-import net.uhb217.glowingentity.gui.TestGUI;
-import net.uhb217.glowingentity.gui.TestScreen;
+import net.uhb217.playertrackermod.gui.GUI;
+import net.uhb217.playertrackermod.gui.TestScreen;
 import org.lwjgl.glfw.GLFW;
 
 public class KeyInputHandler {
-    public static final String KEY_CATEGORY_LS = "Lightning Strike Keys";
-    public static final String KEY_OPEN_LS_SCREEN = "Open Lightning Strike screen";
+    public static final String KEY_CATEGORY_LS = "Player Tracker Keys";
+    public static final String KEY_OPEN_LS_SCREEN = "Open the player tracker screen";
     public static KeyBinding openLSScreenKey;
-    public static void registerKeyInputs(){
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (openLSScreenKey.wasPressed() && client.world.isClient()){
-                client.setScreen(new TestScreen(new TestGUI(client)));
-            }
 
+    public static void registerKeyInputs() {
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (openLSScreenKey.wasPressed() && client.world.isClient()) {
+                client.setScreen(new TestScreen(new GUI.PlayerTrackerSetTargetGUI(client)));
+            }
         });
     }
-    public static void register(){
+
+    public static void register() {
         openLSScreenKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 KEY_OPEN_LS_SCREEN,
                 InputUtil.Type.KEYSYM,
