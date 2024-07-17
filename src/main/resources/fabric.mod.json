@@ -1,31 +1,32 @@
 {
 	"schemaVersion": 1,
-	"id": "playertrackermod",
+	"id": "playertracker",
 	"version": "${version}",
 	"name": "Player Tracker",
-	"description": "This is a client side mod that let you track player with a compass",
+	"description": "A client side mod that let you track player with a compass",
 	"authors": [
-		"UHB217"
+		"UHB217",
+		"I-No-oNe"
 	],
 	"contact": {
 		"homepage": "",
-		"sources": "https://github.com/uhb217/PlayerTracker-1.20.4"
+		"sources": "https://github.com/uhb217/PlayerTracker"
 	},
 	"license": "MIT",
-	"icon": "assets/playertrackermod/textures/gui/player_tracker.png",
+	"icon": "assets/playertracker/textures/player_tracker.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.uhb217.playertrackermod.PlayerTrackerMod"
+			"net.uhb217.playertracker.PlayerTrackerMod"
 		],
 		"client": [
-			"net.uhb217.playertrackermod.PlayerTrackerModClient"
+			"net.uhb217.playertracker.PlayerTrackerClient"
 		]
 	},
 	"mixins": [
-		"playertrackermod.mixins.json",
+		"playertracker.mixins.json",
 		{
-			"config": "playertrackermod.client.mixins.json",
+			"config": "playertracker.client.mixins.json",
 			"environment": "client"
 		}
 	],
