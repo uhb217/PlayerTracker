@@ -10,6 +10,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import net.uhb217.playertracker.gui.GUI;
+import net.uhb217.playertracker.client.Global;
 import net.uhb217.playertracker.gui.TestScreen;
 import net.uhb217.playertracker.utils.NBTConfigUtils;
 import net.uhb217.playertracker.utils.NetworkUtils;
@@ -21,7 +22,7 @@ import java.util.UUID;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
-public class PlayerTrackerClient implements ClientModInitializer {
+public class PlayerTrackerClient implements ClientModInitializer,Global {
 
     @Override
     public void onInitializeClient() {
@@ -42,7 +43,7 @@ public class PlayerTrackerClient implements ClientModInitializer {
                                 NBTConfigUtils playerData = (NBTConfigUtils) context.getSource().getClient().player;
                                 Objects.requireNonNull(playerData).playerTracker$getPersistentData().putUuid("compass_target", targetUUID);
                             } else {
-                                context.getSource().sendError(Text.literal("Player not found or not in the same dimension."));
+                                context.getSource().sendError(Text.literal(PREFIX + "Compass target isn't in the game or in this dimension."));
                             }
                             return SINGLE_SUCCESS;
                         }))));

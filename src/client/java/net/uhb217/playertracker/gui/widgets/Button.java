@@ -48,7 +48,7 @@ public class Button extends WButton {
             int color = 0xE0E0E0;
 
             int xOffset = (getIcon() != null && alignment == HorizontalAlignment.LEFT) ? ICON_SPACING+iconSize+ICON_SPACING : 0;
-            ScreenDrawing.drawStringWithShadow(context, getLabel().asOrderedText(), alignment, x + xOffset, y + ((getHeight() - 8) / 2), width, color); //LibGuiClient.config.darkMode ? darkmodeColor : color);
+            ScreenDrawing.drawStringWithShadow(context, getLabel().asOrderedText(), alignment, x + xOffset, y + ((getHeight() - 8) / 2), width, color); 
         }
         drawToolTip(context,x,y,mouseX,mouseY,this,toolTip);
     }
