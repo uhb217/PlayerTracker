@@ -117,7 +117,7 @@ public class GUI extends LightweightGuiDescription implements Global {
                         mc.currentScreen.close();
                         mc.player.sendMessage(Text.literal(PREFIX + "§3The compass target set to: " + playerName));
                     } else {
-                        mc.player.sendMessage(Text.literal(PREFIX + "Compass target not in the game or in this dimension.").formatted(Formatting.RED));
+                        mc.player.sendMessage(Text.literal(PREFIX + "Compass target isn't in the game or in this dimension.").formatted(Formatting.RED));
                     }
                 });
             } else {
