@@ -29,7 +29,7 @@ public abstract class ModelPredicateProviderMixin implements Global {
                                 if (entity.isPlayer() && data.contains("compass_target") && entity.getWorld().getPlayerByUuid(data.getUuid("compass_target")) != null && entity.getWorld().isClient())
                                         return GlobalPos.create(world.getRegistryKey(), entity.getWorld().getPlayerByUuid(data.getUuid("compass_target")).getBlockPos());
                                 else if(entity.isPlayer() && sentError <= 0) {
-                                    mc.player.sendMessage(Text.literal("Player Tracker: Compass target didn't exist in your dimension 😔").formatted(Formatting.RED));
+                                    mc.player.sendMessage(Text.literal(PREFIX + "Compass target isn't in the game or in this dimension.").formatted(Formatting.RED));
                                     sentError = 100;
                                 }
                                 sentError--;

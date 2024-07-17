@@ -21,7 +21,7 @@ loom {
     splitEnvironmentSourceSets()
 
 	mods {
-		"playertrackermod" {
+		"playertracker" {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}
