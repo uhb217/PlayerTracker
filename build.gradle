@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.7-SNAPSHOT'
+	id 'fabric-loom' version '1.17.21'
 	id 'maven-publish'
 }
 
@@ -11,10 +11,9 @@ base {
 }
 
 repositories {
-	maven {
-		name = "CottonMC"
-		url = "https://server.bbkr.space/artifactory/libs-release"
-	}
+	// Loom provides mavenCentral() and the Fabric maven automatically.
+	// (LibGui was removed: its old CottonMC maven host no longer exists,
+	//  and the GUI was rewritten with vanilla widgets.)
 }
 
 loom {
@@ -27,6 +26,12 @@ loom {
 		}
 	}
 
+	mixin {
+		// Modern Fabric API ships refmap-less mixins; inline their targets when
+		// remapping dependencies so runClient (named mappings) can apply them.
+		inlineDependencyRefmaps.set(true)
+	}
+
 }
 
 dependencies {
@@ -36,7 +41,6 @@ dependencies {
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation include("io.github.cottonmc:LibGui:9.2.2+1.20.2")
 	modImplementation "com.ptsmods:devlogin:3.4.1"
 }
 
@@ -49,14 +53,14 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
+	it.options.release = 21
 }
 
 java {
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {
